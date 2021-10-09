@@ -33,7 +33,7 @@ namespace Api.Controllers.Statistics
 
             var stat = await _statisticsService.GetByUserId(userId, statisticsType);
             if (stat == null)
-                return BadRequest("Not found");
+                return BadRequest(ApiErrors.NOT_FOUND);
 
             return stat;
         }

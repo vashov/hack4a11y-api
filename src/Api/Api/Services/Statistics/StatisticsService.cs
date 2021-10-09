@@ -23,31 +23,34 @@ namespace Api.Services.Statistics
 
             if (statisticsType == StatisticsType.ForCreator)
             {
-                statistics = await _context.Objectives
+                statistics = _context.Objectives
                     .AsNoTracking()
                     .GroupBy(e => e.CreatorId)
                     .Select(e => new { UserId = e.Key, Count = e.Count() })
                     .OrderByDescending(g => g.Count)
-                    .Select((e, idx) => new StatisticsDto { UserId = e.UserId, CreatedObjectives = e.Count, Place = idx })
+                    .AsEnumerable() // TODO need fix for ROW_NUMBER
+                    .Select((e, idx) => new StatisticsDto { UserId = e.UserId, CreatedObjectives = e.Count, Place = idx + 1 })
                     .Where(e => e.UserId == userId)
-                    .SingleOrDefaultAsync();
-
-                statistics.StatisticsType = StatisticsType.ForCreator;
-
-                return statistics;
+                    .SingleOrDefault();
             }
-
-            statistics = await _context.Objectives
+            else
+            {
+                statistics = _context.Objectives
                     .AsNoTracking()
                     .Where(e => e.ExecutorId != null && e.Executed)
                     .GroupBy(e => e.ExecutorId)
                     .Select(e => new { UserId = e.Key, Count = e.Count() })
                     .OrderByDescending(g => g.Count)
-                    .Select((e, idx) => new StatisticsDto { UserId = e.UserId.Value, FinishedObjectives = e.Count, Place = idx })
+                    .AsEnumerable() // TODO need fix for ROW_NUMBER
+                    .Select((e, idx) => new StatisticsDto { UserId = e.UserId.Value, FinishedObjectives = e.Count, Place = idx + 1 })
                     .Where(e => e.UserId == userId)
-                    .SingleOrDefaultAsync();
+                    .SingleOrDefault();
+            }
 
-            statistics.StatisticsType = StatisticsType.ForExecutor;
+            if (statistics == null)
+                return null;
+
+            statistics.StatisticsType = statisticsType.ToString();
 
             return statistics;
         }
@@ -58,27 +61,32 @@ namespace Api.Services.Statistics
 
             if (statisticsType == StatisticsType.ForCreator)
             {
-                top = await _context.Objectives
+                top = _context.Objectives
                     .AsNoTracking()
                     .GroupBy(e => e.CreatorId)
                     .Select(e => new { UserId = e.Key, Count = e.Count() })
                     .OrderByDescending(g => g.Count)
                     .Take(countTop)
-                    .Select((e, idx) => new StatisticsDto { UserId = e.UserId, CreatedObjectives = e.Count, Place = idx, StatisticsType = statisticsType })
-                    .ToListAsync();
-
-                return top;
+                    .AsEnumerable() // TODO need fix for ROW_NUMBER
+                    .Select((e, idx) => new StatisticsDto { UserId = e.UserId, CreatedObjectives = e.Count, Place = idx + 1, StatisticsType = statisticsType.ToString() })
+                    .ToList();
             }
-
-            top = await _context.Objectives
+            else
+            {
+                top = _context.Objectives
                     .AsNoTracking()
                     .Where(e => e.ExecutorId != null && e.Executed)
                     .GroupBy(e => e.ExecutorId)
                     .Select(e => new { UserId = e.Key, Count = e.Count() })
                     .OrderByDescending(g => g.Count)
                     .Take(countTop)
-                    .Select((e, idx) => new StatisticsDto { UserId = e.UserId.Value, FinishedObjectives = e.Count, Place = idx, StatisticsType = statisticsType })
-                    .ToListAsync();
+                    .AsEnumerable() // TODO need fix for ROW_NUMBER
+                    .Select((e, idx) => new StatisticsDto { UserId = e.UserId.Value, FinishedObjectives = e.Count, Place = idx + 1, StatisticsType = statisticsType.ToString() })
+                    .Take(countTop)
+                    .ToList();
+            }
+
+            
 
             return top;
         }

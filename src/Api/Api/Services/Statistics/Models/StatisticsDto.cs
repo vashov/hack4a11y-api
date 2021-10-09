@@ -12,6 +12,6 @@ namespace Api.Services.Statistics.Models
         public long FinishedObjectives { get; set; }
         public long CreatedObjectives { get; set; }
 
-        public StatisticsType StatisticsType { get; set; }
+        public string StatisticsType { get; set; }
     }
 }
