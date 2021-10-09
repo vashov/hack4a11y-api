@@ -9,6 +9,9 @@ namespace Api.Controllers.Users.Models
     {
         public long Id { get; set; }
         public long Phone { get; set; }
+        public string GivenName { get; set; }
+        public string FamilyName { get; set; }
+        public string About { get; set; }
         public List<string> Roles { get; set; }
     }
 }

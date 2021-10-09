@@ -33,20 +33,20 @@ namespace Api.Controllers.Auth
             var existedUser = await _userService.GetByPhone(model.Login);
             if (existedUser != null)
             {
-                return BadRequest(ApiErrors.ERROR_USER_EXISTS);
+                return BadRequest(ApiErrors.USER_EXISTS);
             }
 
             string role = MapRole(model.Role);
             if (role == null)
             {
-                return BadRequest(ApiErrors.ERROR_ROLE);
+                return BadRequest(ApiErrors.INVALID_ROLE);
             }
 
             var hash = new PasswordHasher().CreateHash(model.Password);
             var user = await _userService.Create(model.Login, hash, role);
             if (user == null)
             {
-                return BadRequest(ApiErrors.ERROR_USER_NOT_CREATED);
+                return BadRequest(ApiErrors.FAIL_CREATE);
             }
 
             return Ok();
@@ -58,15 +58,15 @@ namespace Api.Controllers.Auth
             var user = await _userService.GetByPhone(model.Login);
             if (user == null || !new PasswordHasher().IsPasswordsEquals(model.Password, user.PasswordHash))
             {
-                return BadRequest(ApiErrors.ERROR_INVALID);
+                return BadRequest(ApiErrors.INVALID);
             }
 
             string encodedJwt = GetEncodedToken(user);
 
             var response = new LoginResponse
             {
-                AccessToken = encodedJwt,
-                Username = user.PhoneNumber.ToString()
+                AccessToken = $"Bearer {encodedJwt}",
+                //Username = user.PhoneNumber.ToString()
             };
 
             return response;

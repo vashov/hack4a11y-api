@@ -10,6 +10,11 @@ namespace Api.Data.Entities
         public long Id { get; set; }
         public long PhoneNumber { get; set; }
         public string PasswordHash { get; set; }
+
+        public string GivenName { get; set; }
+        public string FamilyName { get; set; }
+        public string About { get; set; }
+
         public DateTime CreatedAt { get; set; }
 
         public List<Objective> ObjectivesOfCreator { get; set; }
@@ -36,6 +41,15 @@ namespace Api.Data.Entities
 
             builder.HasMany(e => e.Roles)
                 .WithMany(e => e.Users);
+
+            builder.Property(p => p.GivenName)
+                .HasMaxLength(128);
+
+            builder.Property(p => p.FamilyName)
+                .HasMaxLength(128);
+
+            builder.Property(p => p.About)
+                .HasMaxLength(256);
         }
     }
 }

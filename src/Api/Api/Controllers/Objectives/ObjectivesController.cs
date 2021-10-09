@@ -65,7 +65,7 @@ namespace Api.Controllers.Objectives
                 longitude: model.Longitude);
 
             if (objective == null)
-                return BadRequest(ApiErrors.ERROR_OBJECTIVE_NOT_CREATED);
+                return BadRequest(ApiErrors.FAIL_CREATE);
 
             return Ok();
         }
@@ -79,7 +79,7 @@ namespace Api.Controllers.Objectives
                 executorId: User.GetUserId());
 
             if (!updated)
-                return BadRequest(ApiErrors.ERROR_OBJECTIVE_NOT_UPDATED);
+                return BadRequest(ApiErrors.FAIL_UPDATE);
 
             return Ok();
         }
@@ -90,7 +90,7 @@ namespace Api.Controllers.Objectives
         {
             var updated = await _objectiveService.Finish(model.ObjectiveId);
             if (!updated)
-                return BadRequest(ApiErrors.ERROR_OBJECTIVE_NOT_UPDATED);
+                return BadRequest(ApiErrors.FAIL_UPDATE);
 
             return Ok();
         }

@@ -79,5 +79,36 @@ namespace Api.Services
 
             return user;
         }
+
+        public async Task<bool> Update(long userId, string givenName, string familyName, string about)
+        {
+            var user = await _context.Users
+                .AsNoTracking()
+                .SingleOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+                return false;
+
+            user.GivenName = givenName;
+            user.FamilyName = familyName;
+            user.About = about;
+
+            var entity = _context.Attach(user);
+            entity.Property(p => p.GivenName).IsModified = true;
+            entity.Property(p => p.FamilyName).IsModified = true;
+            entity.Property(p => p.About).IsModified = true;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception e)
+            {
+                _logger.LogWarning($"{e}");
+                return false;
+            }
+
+            return true;
+        }
     }
 }
