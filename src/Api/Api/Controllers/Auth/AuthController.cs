@@ -28,37 +28,37 @@ namespace Api.Controllers.Auth
         }
 
         [HttpPost("[action]")]
-        public async Task<ApiResult> Register([FromBody] RegisterRequest model)
+        public async Task<ActionResult> Register([FromBody] RegisterRequest model)
         {
             var existedUser = await _userService.GetByPhone(model.Login);
             if (existedUser != null)
             {
-                return ApiResult.Error(ApiErrors.ERROR_USER_EXISTS);
+                return BadRequest(ApiErrors.ERROR_USER_EXISTS);
             }
 
             string role = MapRole(model.Role);
             if (role == null)
             {
-                return ApiResult.Error(ApiErrors.ERROR_ROLE);
+                return BadRequest(ApiErrors.ERROR_ROLE);
             }
 
             var hash = new PasswordHasher().CreateHash(model.Password);
             var user = await _userService.Create(model.Login, hash, role);
             if (user == null)
             {
-                return ApiResult.Error(ApiErrors.ERROR_USER_NOT_CREATED);
+                return BadRequest(ApiErrors.ERROR_USER_NOT_CREATED);
             }
 
-            return ApiResult.Ok();
+            return Ok();
         }
 
         [HttpPost("[action]")]
-        public async Task<ApiResult<LoginResponse>> Token([FromBody] LoginRequest model)
+        public async Task<ActionResult<LoginResponse>> Token([FromBody] LoginRequest model)
         {
             var user = await _userService.GetByPhone(model.Login);
             if (user == null || !new PasswordHasher().IsPasswordsEquals(model.Password, user.PasswordHash))
             {
-                return ApiResult<LoginResponse>.Error(ApiErrors.ERROR_INVALID);
+                return BadRequest(ApiErrors.ERROR_INVALID);
             }
 
             string encodedJwt = GetEncodedToken(user);
@@ -69,7 +69,7 @@ namespace Api.Controllers.Auth
                 Username = user.PhoneNumber.ToString()
             };
 
-            return ApiResult<LoginResponse>.Ok(response);
+            return response;
         }
 
         private static string GetEncodedToken(User user)

@@ -26,26 +26,28 @@ namespace Api.Controllers.Statistics
 
         [HttpGet("{userId}")]
         [ResponseCache(Duration = 30)]
-        public async Task<ApiResult<StatisticsDto>> Get([FromRoute] long userId)
+        public async Task<ActionResult<StatisticsDto>> Get([FromRoute] long userId)
         {
             StatisticsType statisticsType = User.IsInRole(Roles.Creator)
                 ? StatisticsType.ForCreator : StatisticsType.ForExecutor;
 
             var stat = await _statisticsService.GetByUserId(userId, statisticsType);
+            if (stat == null)
+                return BadRequest("Not found");
 
-            return ApiResult<StatisticsDto>.Ok(stat);
+            return stat;
         }
 
         [HttpGet("[action]")]
         [ResponseCache(Duration = 30)]
-        public async Task<ApiResult<List<StatisticsDto>>> Top()
+        public async Task<ActionResult<List<StatisticsDto>>> Top()
         {
             StatisticsType statisticsType = User.IsInRole(Roles.Creator)
                 ? StatisticsType.ForCreator : StatisticsType.ForExecutor;
 
             List<StatisticsDto> stat = await _statisticsService.GetTop(countTop: 10, statisticsType);
 
-            return ApiResult<List<StatisticsDto>>.Ok(stat);
+            return stat;
         }
     }
 }

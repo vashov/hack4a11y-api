@@ -67,6 +67,8 @@ namespace Api
             services.AddScoped<UserService>();
             services.AddScoped<ObjectiveService>();
             services.AddScoped<StatisticsService>();
+
+            services.AddHostedService<DbContextFiller>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

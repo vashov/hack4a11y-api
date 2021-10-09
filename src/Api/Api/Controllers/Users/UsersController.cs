@@ -26,12 +26,10 @@ namespace Api.Controllers.Users
 
         [HttpGet("/me")]
         [ResponseCache(Duration = 30)]
-        public async Task<ApiResult<UserResponse>> Me()
+        public async Task<UserResponse> Me()
         {
             var userId = User.GetUserId();
             var user = await _userService.GetById(userId);
-
-            await _userService.LoadRoles(user);
 
             var roles = user.Roles.Select(r => r.Name).ToList();
 
@@ -41,7 +39,7 @@ namespace Api.Controllers.Users
                 Phone = user.PhoneNumber,
                 Roles = roles
             };
-            return ApiResult<UserResponse>.Ok(response);
+            return response;
         }
     }
 }

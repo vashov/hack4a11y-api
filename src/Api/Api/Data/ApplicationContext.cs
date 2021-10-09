@@ -24,9 +24,9 @@ namespace Api.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserEntityConfiguration).Assembly);
+            base.OnModelCreating(modelBuilder);
 
-            DbContextFiller.HasData(modelBuilder);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserEntityConfiguration).Assembly);
         }
     }
 }

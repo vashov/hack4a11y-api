@@ -30,18 +30,20 @@ namespace Api.Controllers.Objectives
 
         [HttpGet("{id}")]
         [ResponseCache(Duration = 30)]
-        public async Task<ApiResult<GetObjectiveRequest>> Get([FromRoute] long id)
+        public async Task<ActionResult<GetObjectiveRequest>> Get([FromRoute] long id)
         {
             var objective = await _objectiveService.GetById(id);
+            if (objective == null)
+                return BadRequest("Not found");
 
             var res = _mapper.Map<GetObjectiveRequest>(objective);
 
-            return ApiResult<GetObjectiveRequest>.Ok(res);
+            return res;
         }
 
         [HttpGet()]
         [ResponseCache(Duration = 30)]
-        public async Task<ApiResult<List<GetObjectiveRequest>>> GetAll([FromQuery] GetAllObjectivesRequest model)
+        public async Task<ActionResult<List<GetObjectiveRequest>>> GetAll([FromQuery] GetAllObjectivesRequest model)
         {
             long? userIdFilter = model.OnlyMy.HasValue ? User.GetUserId() : null;
 
@@ -49,12 +51,12 @@ namespace Api.Controllers.Objectives
 
             var res = _mapper.Map<List<GetObjectiveRequest>>(objectives);
 
-            return ApiResult<List<GetObjectiveRequest>>.Ok(res);
+            return res;
         }
 
         [HttpPost("[action]")]
         [Authorize(Roles = Roles.Creator)]
-        public async Task<ApiResult> Create([FromBody] CreateRequest model)
+        public async Task<ActionResult> Create([FromBody] CreateRequest model)
         {
             var objective = await _objectiveService.Create(
                 userId: User.GetUserId(),
@@ -63,34 +65,34 @@ namespace Api.Controllers.Objectives
                 longitude: model.Longitude);
 
             if (objective == null)
-                return ApiResult.Error(ApiErrors.ERROR_OBJECTIVE_NOT_CREATED);
+                return BadRequest(ApiErrors.ERROR_OBJECTIVE_NOT_CREATED);
 
-            return ApiResult.Ok();
+            return Ok();
         }
 
         [HttpPost("[action]")]
         [Authorize(Roles = Roles.Executor)]
-        public async Task<ApiResult> Execute([FromBody] ExecuteRequest model)
+        public async Task<ActionResult> Execute([FromBody] ExecuteRequest model)
         {
             var updated = await _objectiveService.SetExecutor(
                 objectiveId: model.ObjectiveId,
                 executorId: User.GetUserId());
 
             if (!updated)
-                return ApiResult.Error(ApiErrors.ERROR_OBJECTIVE_NOT_UPDATED);
+                return BadRequest(ApiErrors.ERROR_OBJECTIVE_NOT_UPDATED);
 
-            return ApiResult.Ok();
+            return Ok();
         }
 
         [HttpPost("[action]")]
         [Authorize]
-        public async Task<ApiResult> Finish([FromBody] FinishRequest model)
+        public async Task<ActionResult> Finish([FromBody] FinishRequest model)
         {
             var updated = await _objectiveService.Finish(model.ObjectiveId);
             if (!updated)
-                return ApiResult.Error(ApiErrors.ERROR_OBJECTIVE_NOT_UPDATED);
+                return BadRequest(ApiErrors.ERROR_OBJECTIVE_NOT_UPDATED);
 
-            return ApiResult.Ok();
+            return Ok();
         }
     }
 }
