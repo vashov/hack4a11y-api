@@ -1,6 +1,7 @@
 using Api.Data;
 using Api.Infrastructure;
 using Api.Services;
+using Api.Services.Statistics;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
