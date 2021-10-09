@@ -28,7 +28,7 @@ namespace Api.Controllers.Objectives
             _mapper = mapper;
         }
 
-        [HttpGet("/{id})")]
+        [HttpGet("{id}")]
         [ResponseCache(Duration = 30)]
         public async Task<ApiResult<GetObjectiveRequest>> Get([FromRoute] long id)
         {

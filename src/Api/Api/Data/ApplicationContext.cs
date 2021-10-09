@@ -13,9 +13,20 @@ namespace Api.Data
         public DbSet<Role> Roles { get; set; }
         public DbSet<Objective> Objectives { get; set; }
 
+        public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
+        {
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserEntityConfiguration).Assembly);
+
+            DbContextFiller.HasData(modelBuilder);
         }
     }
 }

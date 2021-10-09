@@ -43,7 +43,7 @@ namespace Api.Controllers.Auth
             }
 
             var hash = new PasswordHasher().CreateHash(model.Password);
-            var user = _userService.Create(model.Login, hash, role);
+            var user = await _userService.Create(model.Login, hash, role);
             if (user == null)
             {
                 return ApiResult.Error(ApiErrors.ERROR_USER_NOT_CREATED);
