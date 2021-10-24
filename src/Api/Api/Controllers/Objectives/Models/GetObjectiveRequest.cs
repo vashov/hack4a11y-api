@@ -10,6 +10,9 @@ namespace Api.Controllers.Objectives.Models
         public long Id { get; set; }
         public string Desctiption { get; set; }
 
+        public decimal Longitude { get; set; }
+        public decimal Latitude { get; set; }
+
         public DateTime CreatedAt { get; set; }
 
         public long CreatorId { get; set; }
