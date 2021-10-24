@@ -7,7 +7,7 @@ namespace Api.Data.Entities
     public class Objective
     {
         public long Id { get; set; }
-        public string Desctiption { get; set; }
+        public string Description { get; set; }
 
         public decimal Longitude { get; set; }
         public decimal Latitude { get; set; }
@@ -34,7 +34,7 @@ namespace Api.Data.Entities
             builder.Property(p => p.Timestamp)
                 .IsRowVersion();
 
-            builder.Property(p => p.Desctiption)
+            builder.Property(p => p.Description)
                 .IsRequired()
                 .HasMaxLength(512);
 

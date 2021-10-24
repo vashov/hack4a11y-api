@@ -66,7 +66,7 @@ namespace Api.Services
             var objective = new Objective
             {
                 CreatorId = userId,
-                Desctiption = description,
+                Description = description,
                 CreatedAt = DateTime.UtcNow,
                 Latitude = latitude,
                 Longitude = longitude

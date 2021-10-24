@@ -8,7 +8,7 @@ namespace Api.Controllers.Objectives.Models
     public class GetObjectiveRequest
     {
         public long Id { get; set; }
-        public string Desctiption { get; set; }
+        public string Description { get; set; }
 
         public decimal Longitude { get; set; }
         public decimal Latitude { get; set; }
