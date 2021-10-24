@@ -60,7 +60,7 @@ namespace Api.Controllers.Objectives
         {
             var objective = await _objectiveService.Create(
                 userId: User.GetUserId(),
-                description: model.Desctiption,
+                description: model.Description,
                 latitude: model.Latitude,
                 longitude: model.Longitude);
 

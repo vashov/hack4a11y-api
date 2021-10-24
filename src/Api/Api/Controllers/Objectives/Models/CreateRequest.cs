@@ -10,7 +10,7 @@ namespace Api.Controllers.Objectives.Models
     {
         [Required]
         [MaxLength(512)]
-        public string Desctiption { get; set; }
+        public string Description { get; set; }
 
         [Required]
         public decimal Latitude { get; set; }
