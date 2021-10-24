@@ -66,7 +66,8 @@ namespace Api.Controllers.Auth
             var response = new LoginResponse
             {
                 AccessToken = $"Bearer {encodedJwt}",
-                UserId = user.Id
+                UserId = user.Id,
+                Roles = user.Roles.Select(r => r.Name).ToList()
             };
 
             return response;
