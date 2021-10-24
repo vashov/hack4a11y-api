@@ -66,7 +66,7 @@ namespace Api.Controllers.Auth
             var response = new LoginResponse
             {
                 AccessToken = $"Bearer {encodedJwt}",
-                //Username = user.PhoneNumber.ToString()
+                UserId = user.Id
             };
 
             return response;

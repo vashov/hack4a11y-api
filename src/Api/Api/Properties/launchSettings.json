@@ -7,7 +7,7 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "JWT_SECRET_KEY": "test_secret_key123412354"
+        "JWT_SECRET_KEY": "cdedf4f3-3a5f-4a15-ab6a-ae8a1f275df4"
       },
       "dotnetRunMessages": "true",
       "applicationUrl": "https://localhost:5001;http://localhost:5000"

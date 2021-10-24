@@ -1,7 +1,6 @@
 ﻿using Api.Data;
 using Api.Services.Statistics.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,6 +19,10 @@ namespace Api.Services.Statistics
         public async Task<StatisticsDto> GetByUserId(long userId, StatisticsType statisticsType)
         {
             StatisticsDto statistics;
+
+            var user = _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            if (user == null)
+                return null;
 
             if (statisticsType == StatisticsType.ForCreator)
             {
@@ -48,7 +51,15 @@ namespace Api.Services.Statistics
             }
 
             if (statistics == null)
-                return null;
+            {
+                var place = await _context.Users.CountAsync();
+
+                statistics = new StatisticsDto
+                {
+                    UserId = userId,
+                    Place = place
+                };
+            }
 
             statistics.StatisticsType = statisticsType.ToString();
 
@@ -85,8 +96,6 @@ namespace Api.Services.Statistics
                     .Take(countTop)
                     .ToList();
             }
-
-            
 
             return top;
         }
