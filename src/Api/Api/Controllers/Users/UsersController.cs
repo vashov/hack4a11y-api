@@ -29,7 +29,7 @@ namespace Api.Controllers.Users
         }
 
         [HttpGet("[action]")]
-        [ResponseCache(Duration = 5)]
+        //[ResponseCache(Duration = 5)]
         public async Task<UserResponse> Me()
         {
             var userId = User.GetUserId();

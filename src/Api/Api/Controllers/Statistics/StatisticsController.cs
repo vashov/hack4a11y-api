@@ -25,7 +25,7 @@ namespace Api.Controllers.Statistics
         }
 
         [HttpGet("{userId}")]
-        [ResponseCache(Duration = 30)]
+        //[ResponseCache(Duration = 30)]
         public async Task<ActionResult<StatisticsDto>> Get([FromRoute] long userId)
         {
             StatisticsType statisticsType = User.IsInRole(Roles.Creator)
@@ -39,7 +39,7 @@ namespace Api.Controllers.Statistics
         }
 
         [HttpGet("[action]")]
-        [ResponseCache(Duration = 30)]
+        //[ResponseCache(Duration = 30)]
         public async Task<ActionResult<List<StatisticsDto>>> Top()
         {
             StatisticsType statisticsType = User.IsInRole(Roles.Creator)

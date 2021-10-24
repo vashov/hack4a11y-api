@@ -29,7 +29,7 @@ namespace Api.Controllers.Objectives
         }
 
         [HttpGet("{id}")]
-        [ResponseCache(Duration = 30)]
+        //[ResponseCache(Duration = 30)]
         public async Task<ActionResult<GetObjectiveRequest>> Get([FromRoute] long id)
         {
             var objective = await _objectiveService.GetById(id);
@@ -42,7 +42,7 @@ namespace Api.Controllers.Objectives
         }
 
         [HttpGet()]
-        [ResponseCache(Duration = 30)]
+        //[ResponseCache(Duration = 30)]
         public async Task<ActionResult<List<GetObjectiveRequest>>> GetAll([FromQuery] GetAllObjectivesRequest model)
         {
             long? userIdFilter = model.OnlyMy.HasValue ? User.GetUserId() : null;
