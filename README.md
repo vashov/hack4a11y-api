@@ -23,3 +23,4 @@ Requirementes:
 ## Techs
 - Asp.NET Core
 - EntityFramework (and database in memory)
+- Deploy via Heroku
