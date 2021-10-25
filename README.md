@@ -20,12 +20,6 @@ Service for coordinating people who need some help and for volunteers who would 
 Requirementes:
 - dotnet 5
 
-```
-git clone https://github.com/vashov/multi-chat.git
-cd ./multi-chat/MultiChat/Server/
-dotnet run
-```
-
 ## Techs
 - Asp.NET Core
 - EntityFramework (and database in memory)
